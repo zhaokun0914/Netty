@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        // 判断当前浏览器是否支持 websocket
+        var socket;
+        if (window.WebSocket) {
+            socket = new WebSocket("ws://localhost:9099/hello");
+            // WebSocket.onmessage属性是一个事件处理程序 ，当从服务器接收到消息时调用它。它通过MessageEvent调用。
+            socket.onmessage = function (messageEvent) {
+                let rt = document.getElementById('responseText');
+                rt.value = rt.value + "\n" + messageEvent.data;
+            }
+            // WebSocket.onopen属性是一个事件处理程序 ，当WebSocket连接的readyState变为1 时调用；这表明连接已准备好发送和接收数据。它被称为Event 。
+            socket.onopen = function (event) {
+                document.getElementById('responseText').value = '连接开启...';
+            }
+            // WebSocket.onclose属性是一个事件处理程序 ，在 WebSocket 连接的readyState更改为CLOSED时调用。它通过CloseEvent调用
+            socket.onclose = function (closeEvent) {
+                let rt = document.getElementById('responseText');
+                rt.value = rt.value + "\n连接关闭了...";
+            }
+        } else {
+            alert("当前浏览器不支持websocket")
+        }
+        function send(message) {
+            if (!window.socket) {
+                // 先判断socket是否创建好
+                return;
+            }
+            if (socket.readyState === WebSocket.OPEN) {
+                // WebSocket.send()方法将要通过 WebSocket 连接传输到服务器的指定数据排入队列，将bufferedAmount的值增加包含数据所需的字节数。
+                // 如果无法发送数据（例如需要缓冲但缓冲区已满），则自动关闭套接字。
+                socket.send(message);
+            } else {
+                alert("连接没有开启");
+            }
+        }
+    </script>
+</head>
+<body>
+<form onsubmit="return false">
+    <textarea name="message" style="height: 300px; width: 300px"></textarea>
+    <input type="button" value="发送消息" onclick="send(this.form.message.value)">
+    <textarea id="responseText" style="height: 300px; width: 300px"></textarea>
+    <input type="button" value="清空内容" onclick="clear(document.getElementById('responseText').value='')">
+</form>
+</body>
+</html>

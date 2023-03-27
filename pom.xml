@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.globelbill</groupId>
-    <artifactId>nio</artifactId>
+    <artifactId>Netty</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>nio</name>
+    <name>Netty</name>
     <url>http://maven.apache.org</url>
 
     <properties>
